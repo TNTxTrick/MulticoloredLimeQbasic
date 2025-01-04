@@ -4,11 +4,7 @@ const app = express();
 const PORT = 3000;
 
 // Static files
-app.use(express.json());
-
-app.get("/", async function (req, res) {
-	res.sendFile(path.join(__dirname, "/public/index.html"));
-});
+app.use(express.static('public'));
 
 // Đọc danh sách IP từ file
 function readIPFile() {
