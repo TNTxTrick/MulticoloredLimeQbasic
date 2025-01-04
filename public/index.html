@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Key Free</title>
+    <style>
+        /* Tổng quan */
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #0f0f0f;
+            color: #0ff;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Hiệu ứng neon cho chữ */
+        h1 {
+            font-size: 2.5rem;
+            color: #0ff;
+            text-shadow: 0 0 5px #0ff, 0 0 10px #0ff, 0 0 20px #00f6ff;
+        }
+
+        /* Nút */
+        button {
+            padding: 15px 30px;
+            margin: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #000;
+            background: linear-gradient(45deg, #0ff, #00f6ff);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 0 10px #0ff, 0 0 20px #00f6ff;
+        }
+
+        button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 15px #0ff, 0 0 30px #00f6ff;
+        }
+
+        /* Khu vực hiển thị API key */
+        #apiKey {
+            margin-top: 20px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px #00f6ff;
+        }
+
+        /* Nút sao chép */
+        #copyBtn {
+            display: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #fff;
+            background: linear-gradient(45deg, #00f6ff, #0ff);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 0 10px #0ff, 0 0 20px #00f6ff;
+        }
+
+        #copyBtn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 15px #00f6ff, 0 0 30px #0ff;
+        }
+
+        /* Hiển thị thông báo */
+        #message {
+            margin-top: 10px;
+            font-size: 1.2rem;
+            color: #0f0;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Generate API Key</h1>
+    <button id="generateKeyBtn">Request API Key</button>
+    <div id="apiKey"></div>
+    <button id="copyBtn">Copy Key</button>
+    <div id="message">Copy key thành công!</div>
+
+    <script>
+        const button = document.getElementById('generateKeyBtn');
+        const apiKeyDiv = document.getElementById('apiKey');
+        const copyBtn = document.getElementById('copyBtn');
+        const messageDiv = document.getElementById('message');
+
+        // Request API Key
+        button.addEventListener('click', async () => {
+            try {
+                const response = await fetch('/request-key', { method: 'GET' });
+                const data = await response.json();
+                if (data.apiKey) {
+                    apiKeyDiv.textContent = `Key của bạn: ${data.apiKey}`;
+                    copyBtn.style.display = 'inline-block';
+                    messageDiv.style.display = 'none';
+                } else {
+                    apiKeyDiv.textContent = 'No API keys available.';
+                    copyBtn.style.display = 'none';
+                }
+            } catch (error) {
+                apiKeyDiv.textContent = 'Error requesting API key.';
+                copyBtn.style.display = 'none';
+            }
+        });
+
+        // Copy API Key
+        copyBtn.addEventListener('click', () => {
+            const keyText = apiKeyDiv.textContent.replace('Key của bạn: ', '');
+            if (keyText) {
+                navigator.clipboard.writeText(keyText).then(() => {
+                    messageDiv.style.display = 'block';
+                    setTimeout(() => {
+                        messageDiv.style.display = 'none';
+                    }, 2000); // Ẩn thông báo sau 2 giây
+                });
+            }
+        });
+    </script>
+</body>
+</html>
