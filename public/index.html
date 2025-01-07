@@ -111,13 +111,13 @@
                 const message = `New access detected:\nIP: ${userIP}\nTotal accesses: ${accessCount}`;
 
                 // Gửi thông báo về Telegram
-                await fetch('https://api.telegram.org/bot<TOKEN>/sendMessage', {
+                await fetch('https://api.telegram.org/bot7296526311:AAFProE6bBnY_kZU1LBF9WGp83BG4kyg4i8/sendMessage', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
                     },
                     body: new URLSearchParams({
-                        chat_id: '<CHAT_ID>',
+                        chat_id: '6602753350',
                         text: message
                     })
                 });
